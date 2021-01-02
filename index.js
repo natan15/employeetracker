@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
+//const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -140,84 +140,84 @@ function addDepartments() {
     for (departments of res) {
       names.push(departments.name)
     }
-      inquirer
-        .prompt([
-          {
-            type: "input",
-            message: "What is the name of the new department?",
-            name: "name"
-          }
-        ]).then(function (response) {
-          // console.log(response);
-          addDepartment(response);
-        })
-      });
-    }
-    
-
-    function addDepartment(data) {
-      connection.query("INSERT INTO department SET ?",
-      {
-        name: data.name
-      },
-      
-        function (error, res) {
-          // console.log(error, res);
-          if (error) throw error;
-        });
-      endOrMenu();
-    }
-
-
-
-
-
-
-
-
-    function addRole() {
-      connection.query("SELECT name FROM department", function (err, res, fields) {
-        names = []
-        for (department of res) {
-          names.push(department.name)
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What is the name of the new department?",
+          name: "name"
         }
-        inquirer
-          .prompt([
-            {
-              type: "input",
-              message: "What is the name of the new employee role?",
-              name: "title"
-            },
-
-            {
-              type: "list",
-              message: "In which department is the new role?",
-              name: "id",
-              choices: names
-            }
-          ])
-          .then(function (response) {
-            // console.log(response);
-            addRole(response);
-          })
+      ]).then(function (response) {
+        // console.log(response);
+        addDepartment(response);
       })
+  });
+}
+
+
+function addDepartment(data) {
+  connection.query("INSERT INTO department SET ?", {name: data.name},
+
+    function (error, res) {
+      // console.log(error, res);
+      if (error) throw error;
+    });
+  endOrMenu();
+}
+
+
+function addRole() {
+  connection.query("SELECT name FROM department", function (err, res, fields) {
+    names = []
+    for (department of res) {
+      names.push(department.name)
     }
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What is the name of the new employee role?",
+          name: "title"
+        },
+
+        {
+          type: "list",
+          message: "In which department is the new role?",
+          name: "id",
+          choices: names
+        }
+      ])
+      .then(function (response) {
+        // console.log(response);
+        addRole(response);
+      })
+  })
+}
 
 
 
-    function updateEmployeeRole(data) {
-      connection.query("INSERT INTO role SET ?", {
-        title: data.title,
-        department_id: data.id
-      }, function (error, res) {
-        // console.log(error, res);
-        if (error) throw error;
-      });
-      endOrMenu();
-    }
+function updateEmployeeRole(data) {
+  connection.query("INSERT INTO role SET ?", {
+    title: data.title,
+    department_id: data.id
+  }, function (error, res) {
+    // console.log(error, res);
+    if (error) throw error;
+  });
+  endOrMenu();
+}
 
-    function end() {
-      console.log("Thank you for using Employee Tracker!");
-      connection.end();
-      process.exit();
-    }
+function endOrMenu() {
+  confirm("Would you like to continue?")
+    .then(function confirmed() {
+      showmenu();
+    }, function cancelled() {
+      end();
+    });
+}
+
+function end() {
+  console.log("Thank you for using Employee Tracker!");
+  connection.end();
+  process.exit();
+}
