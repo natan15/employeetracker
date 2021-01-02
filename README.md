@@ -9,25 +9,30 @@ In this project, you will build a solution for managing a company's employees us
 
 Design the following database schema containing three tables:
 
-Database Schema
 
 department:
 
-id - INT PRIMARY KEY
-name - VARCHAR(30) to hold department name
-role:
+  * **id** - INT PRIMARY KEY
+  * **name** - VARCHAR(30) to hold department name
 
-id - INT PRIMARY KEY
-title - VARCHAR(30) to hold role title
-salary - DECIMAL to hold role salary
-department_id - INT to hold reference to department role belongs to
-employee:
+ role:
 
-id - INT PRIMARY KEY
-first_name - VARCHAR(30) to hold employee first name
-last_name - VARCHAR(30) to hold employee last name
-role_id - INT to hold reference to role employee has
-manager_id - INT to hold reference to another employee that manager of the current employee. This field may be null if the employee has no manager
+  * **id** - INT PRIMARY KEY
+  * **title** -  VARCHAR(30) to hold role title
+  * **salary** -  DECIMAL to hold role salary
+  * **department_id** -  INT to hold reference to department role belongs to
+
+ employee:
+
+  * **id** - INT PRIMARY KEY
+  * **first_name** - VARCHAR(30) to hold employee first name
+  * **last_name** - VARCHAR(30) to hold employee last name
+  * **role_id** - INT to hold reference to role employee has
+  * **manager_id** - INT to hold reference to another employee that manages the employee being Created. This field may be null if the employee has no manager
+
+  **You may also want to create a seeds file to pre-populate your data which will make things easier.
+
+
 
 Build a command-line application that at a minimum allows the user to:
 
